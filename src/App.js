@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { useState } from 'react';
 import MusicJS from './js';
 import { injectGlobal } from 'styled-components';
 
@@ -9,15 +9,40 @@ injectGlobal`
    }
 `;
 
-class App extends Component {
-   render() {
-      return (
-         <div className="App">
-            <MusicJS />
+const PlayMusic = ({ url }) => {
+   return (
+      <div>
+         {url ? (
+            <audio controls>
+               <source src={url} type="audio/mpeg" />
+               Your browser does not support the audio element.
+            </audio>
+         ) : (
+            <p>Enter a URL to play music</p>
+         )}
+      </div>
+   );
+};
+
+const App = () => {
+   const [url, setUrl] = useState('');
+
+   return (
+      <div className="App">
+         <MusicJS />
+         <div>
+            <input
+               type="text"
+               value={url}
+               onChange={(e) => setUrl(e.target.value)}
+               placeholder="Enter music URL"
+               required
+            />
          </div>
-      );
-   }
-}
+         <PlayMusic url={url} />
+      </div>
+   );
+};
 
 document.addEventListener('touchstart', function() {}, true);
 
